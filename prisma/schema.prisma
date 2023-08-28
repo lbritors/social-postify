@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model medias {
+  id           Int            @id
+  title        String         @db.VarChar(45)
+  username     String
+  publications publications[]
+}
+
+model posts {
+  id           Int            @id
+  title        String
+  text         String
+  image        String?
+  publications publications[]
+}
+
+model publications {
+  id      Int    @id
+  mediaId Int
+  postId  Int
+  medias  medias @relation(fields: [mediaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts   posts  @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
