@@ -16,17 +16,17 @@ model medias {
 
 model posts {
   id           Int            @id
-  title        String @unique
-  text         String @unique
+  title        String         @unique
+  text         String         @unique
   image        String?
   publications publications[]
 }
 
 model publications {
-  id      Int    @id @default(autoincrement())
+  id      Int                 @id @default(autoincrement())
   mediaId Int
   postId  Int
   medias  medias @relation(fields: [mediaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   posts   posts  @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  date DateTime @default(now())
+  date DateTime              @default(now())
 }

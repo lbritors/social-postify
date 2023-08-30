@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { createMediaDto } from './medias.dto';
-import { Medias } from './medias.entity,';
 import { MediasRepository } from './medias.repository';
 
 @Injectable()
