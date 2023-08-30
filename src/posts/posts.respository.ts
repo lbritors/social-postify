@@ -1,3 +1,4 @@
+import { Publication } from './../entities/publication.entity';
 import { Injectable } from '@nestjs/common';
 import { createPostDto } from './Posts.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -21,10 +22,18 @@ export class PostsRepository {
     })
   }
 
+  asycn findPostWithPublications(id: number) {
+    return this.prisma.posts.findFirst({
+      where: { id },
+      include: {publications: true}
+    })
+  }
+
   async updatePost(id: number, data:createPostDto) {
     return this.prisma.posts.update({
       where: { id: id },
-    data: data })
+      data: data,
+    })
   }
 
   async deletePost(id: number) {

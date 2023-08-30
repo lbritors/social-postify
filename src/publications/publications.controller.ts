@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PublicationsService } from './publications.service';
 import { CreatePublicationDto } from './dto/create-publication.dto';
-import { UpdatePublicationDto } from './dto/update-publication.dto';
 
 @Controller('publications')
 export class PublicationsController {
@@ -22,9 +21,9 @@ export class PublicationsController {
     return this.publicationsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicationDto: UpdatePublicationDto) {
-    return this.publicationsService.update(+id, updatePublicationDto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: CreatePublicationDto) {
+    return this.publicationsService.update(+id, data);
   }
 
   @Delete(':id')
