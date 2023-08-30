@@ -1,5 +1,5 @@
 import { createPostDto } from './posts.dto';
-import { PostsRepository } from './posts.respository';
+import { PostsRepository } from './posts.repository';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
