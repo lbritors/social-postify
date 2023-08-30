@@ -11,6 +11,15 @@ export class MediasRepository {
     return this.prisma.medias.create({data})
   }
 
+  async checkMedia(title: string, username: string) {
+    return this.prisma.medias.findFirst({
+      where: {
+        title: title,
+        username: username
+      }
+    })
+  }
+
   async getMedias() {
     return this.prisma.medias.findMany();
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { createMediaDto } from './medias.dto';
 import { MediasRepository } from './medias.repository';
 
@@ -7,7 +7,10 @@ export class MediasService {
 
   constructor(private readonly repository: MediasRepository) {}  
   //FIXME 
-  createMedia(data: createMediaDto) {
+  async createMedia(data: createMediaDto) {
+    const { title, username } = data;
+    const check = await this.repository.checkMedia(title, username);
+    if (check) throw new HttpException("Content already exists", HttpStatus.CONFLICT);
     return this.repository.createMedia(data);
   }
 
@@ -15,15 +18,26 @@ export class MediasService {
     return this.repository.getMedias();
   }
 
-  getMediaByParam(id: number) {
-    return this.repository.getMediaByParam(id);
+  async getMediaByParam(id: number) {
+
+    const media = await this.repository.getMediaByParam(id);
+    if (!media) throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    
+    return media;
   }
 
-  updateMedia(id: number, data: createMediaDto) {
+  async updateMedia(id: number, data: createMediaDto) {
+    const { username, title } = data;
+    const checkId = await this.repository.getMediaByParam(id);
+    if (!checkId) throw new HttpException("Not found", HttpStatus.NOT_FOUND);
+    const checkMedia = await this.repository.checkMedia(title, username);
+    if (checkMedia) throw new HttpException("Content already exists", HttpStatus.CONFLICT);
     return this.repository.updateMedia(id, data);
   }
 
-  deleteMedia(id: number) {
+  async deleteMedia(id: number) {
+    const checkMedia = await this.repository.getMediaByParam(id);
+    if (!checkMedia) throw new HttpException("Not found", HttpStatus.NOT_FOUND);
     return this.repository.deleteMedia(id);
   }
 }
